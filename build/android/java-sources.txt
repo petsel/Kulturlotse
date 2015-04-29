@@ -1,0 +1,8 @@
+"/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/build/android/gen/android/support/v7/appcompat/R.java"
+"/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/build/android/gen/de/appwerft/kulturlotse/ApplicationStylesheet.java"
+"/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/build/android/gen/de/appwerft/kulturlotse/AssetCryptImpl.java"
+"/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/build/android/gen/de/appwerft/kulturlotse/KulturlotseActivity.java"
+"/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/build/android/gen/de/appwerft/kulturlotse/KulturlotseAppInfo.java"
+"/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/build/android/gen/de/appwerft/kulturlotse/KulturlotseApplication.java"
+"/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/build/android/gen/de/appwerft/kulturlotse/R.java"
+"/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/build/android/gen/ti/modules/titanium/ui/R.java"
