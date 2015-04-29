@@ -1,14 +1,42 @@
-Welcome to your Appcelerator Titanium Mobile Project
+Kulturlotse
+===========
 
-This is a single window application with a single view - a mostly blank canvas. Requires Titanium Mobile SDK 1.8.0+
+Programmdatenbank
+-----------------
 
-----------------------------------
-Stuff our legal folk make us say:
+Die Kommunikation mit dem programmspendenden Server findet über einen modifizierten REST-Service statt.
 
-Appcelerator, Appcelerator Titanium and associated marks and logos are 
-trademarks of Appcelerator, Inc. 
+Request:
+Method = POST, JSON
+Body:
+{ 
+	appkey : "",
+	request : {
+		type : "events",  // "categories", "pois"
+		days : ["2015-04-30","2015-05-01"],
+		categories: ["jazz","kids"]
+	}
+}
 
-Titanium is Copyright (c) 2009-2013 by Appcelerator, Inc. All Rights Reserved.
 
-Titanium is licensed under the Apache Public License (Version 2). Please
-see the LICENSE file for the full license.
+Response:
+{
+	success : true,
+	data : [
+		{ id :815,
+		  category : 'jazz',
+		  title :"",
+		  subtitle : "",
+		  descripton : [],
+		  images : []	
+		}, {
+		}
+	
+	]
+}
+
+Soziale Interaktionen
+---------------------
+
+Persistierung findet in einem Baqend-Server statt.
+
