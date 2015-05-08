@@ -18,7 +18,7 @@ var Module = function() {
             });
             link.execute("BEGIN");
             pois.forEach(function(poi) {
-                
+
                 link.execute("INSERT OR REPLACE INTO hvv VALUES (?,?,?)", poi.name, poi.coords.lat, poi.coords.lng);
             });
             link.execute("COMMIT");
@@ -30,21 +30,22 @@ var Module = function() {
 };
 Module.prototype = {
     getStations : function() {
+        var args = arguments[0] || {};
+        var x =args.longitudeDelta*.6,y=args.latitudeDelta*.6;
         var link = Ti.Database.open(Ti.App.Properties.getString('DATABASE'));
-        var res = link.execute('SELECT lat,lng,name FROM hvv');
+        var res = link.execute('SELECT lat,lng,name FROM hvv WHERE lat>? AND lat<? AND lng>? AND lng<? LIMIT ?', args.latitude - y, args.latitude + y, args.longitude - x, args.longitude + x, args.limit || 120);
         var items = [];
         while (res.isValidRow()) {
             items.push({
-                lat :res.getFieldByName('lat'),
-                lng :res.getFieldByName('lng'),
-                name :res.getFieldByName('name')
+                lat : (parseFloat(res.getFieldByName('lat'))-0.0015).toFixed(6),
+                lng : (parseFloat(res.getFieldByName('lng'))-0.0010).toFixed(6),
+                name : res.getFieldByName('name')
             });
             res.next();
         }
         res.close();
         link.close();
-        return items;    
+        return items;
     }
-    
 };
 module.exports = Module;

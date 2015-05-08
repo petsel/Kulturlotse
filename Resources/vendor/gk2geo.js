@@ -75,7 +75,7 @@ module.exports = function gk2geo() {
 
     //  Längendifferenz dl zum Bezugsmeridian lh
     kz = parseInt(rw / 1e6);
-    lh = kz * 3
+    lh = kz * 3;
     dy = rw - (kz * 1e6 + 500000);
     dy2 = dy * dy;
     dy4 = dy2 * dy2;

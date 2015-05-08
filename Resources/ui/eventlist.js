@@ -12,7 +12,7 @@ var truncate = function(str, limit) {
                 break;
             }
         }
-        bits.push(' …');
+        bits.push(' …');
     }
     return bits.join('');
 };
@@ -67,7 +67,7 @@ module.exports = function(_offset) {
                             text : item.title
                         },
                         text : {
-                            text : truncate(item.text.replace(/<br>/ig, '\n').replace(/(<([^>]+)>)/ig, ""), 72)
+                            text : truncate(item.text.replace(/<br>/ig, '\n').replace(/(<([^>]+)>)/ig, ""), 96)
                         },
                         locationname : {
                             text : item.locationName

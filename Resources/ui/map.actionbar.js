@@ -47,7 +47,7 @@ module.exports = function(_event) {
                  
                  
              });
-                /*   _menuevent.menu.add({
+              _menuevent.menu.add({
                 title : 'HVV Haltestellen',
                 itemId : 2,
                 checkable: true,
@@ -59,16 +59,15 @@ module.exports = function(_event) {
                  switch (item.checked) {
                      case false:
                      item.checked = true;
-                     _event.source.hvvannotations = HVV.getStations().map(function(hvv) {
+                     _event.source.hvvannotations = HVV.getStations(_event.source.mapView.region).map(function(hvv) {
                          return Map.createAnnotation({
                               latitude : hvv.lat,
                               longitude : hvv.lng,
-                              title : hvv.name
+                              title : hvv.name,
+                              image : '/images/hvv.png'
                          });
                       });
-                      _event.source.hvvannotations.forEach(function(pin){
-                          _event.source.mapView.addAnnotation(pin);
-                      });
+                     _event.source.mapView.addAnnotations(_event.source.hvvannotations);
                       
                   
                      break;
@@ -79,7 +78,6 @@ module.exports = function(_event) {
                  }
                  
              });
-             */
              _menuevent.menu.add({
                 title : 'Luftbild',
                 itemId : 3,
