@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="AutoCompleteTextViewKulturlotsecontrols" parent="android:Widget.Holo.Light.AutoCompleteTextView">
+      <item name="android:dropDownSelector">@drawable/kulturlotsecontrols_list_selector_holo_light</item>
+	    <item name="android:background">@drawable/kulturlotsecontrols_edit_text_holo_light</item>
+  </style>
+
+  <style name="ButtonKulturlotsecontrols" parent="android:Widget.Holo.Light.Button">
+	  <item name="android:background">@drawable/kulturlotsecontrols_btn_default_holo_light</item>
+  </style>
+
+  <style name="ImageButtonKulturlotsecontrols" parent="android:Widget.Holo.Light.ImageButton">
+	  <item name="android:background">@drawable/kulturlotsecontrols_btn_default_holo_light</item>
+  </style>
+
+  <style name="SpinnerKulturlotsecontrols" parent="android:Widget.Holo.Light.Spinner">
+      <item name="android:background">@drawable/kulturlotsecontrols_spinner_background_holo_light</item>
+      <item name="android:dropDownSelector">@drawable/kulturlotsecontrols_list_selector_holo_light</item>
+  </style>
+
+  <style name="ProgressBarKulturlotsecontrols" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
+      <item name="android:progressDrawable">@drawable/kulturlotsecontrols_progress_horizontal_holo_light</item>
+      <item name="android:indeterminateDrawable">@drawable/kulturlotsecontrols_progress_indeterminate_horizontal_holo_light</item>
+  </style>
+
+  <style name="SeekBarKulturlotsecontrols" parent="android:Widget.Holo.Light.SeekBar">
+      <item name="android:progressDrawable">@drawable/kulturlotsecontrols_scrubber_progress_horizontal_holo_light</item>
+      <item name="android:indeterminateDrawable">@drawable/kulturlotsecontrols_scrubber_progress_horizontal_holo_light</item>
+      <item name="android:thumb">@drawable/kulturlotsecontrols_scrubber_control_selector_holo_light</item>
+  </style>
+
+  <style name="RatingBarKulturlotsecontrols" parent="android:Widget.Holo.Light.RatingBar">
+      <item name="android:progressDrawable">@drawable/kulturlotsecontrols_ratingbar_full_holo_light</item>
+      <item name="android:indeterminateDrawable">@drawable/kulturlotsecontrols_ratingbar_full_holo_light</item>
+  </style>
+
+  <style name="RatingBarBigKulturlotsecontrols" parent="android:Widget.Holo.Light.RatingBar.Indicator">
+      <item name="android:progressDrawable">@drawable/kulturlotsecontrols_ratingbar_holo_light</item>
+      <item name="android:indeterminateDrawable">@drawable/kulturlotsecontrols_ratingbar_holo_light</item>
+  </style>
+
+  <style name="RatingBarSmallKulturlotsecontrols" parent="android:Widget.Holo.Light.RatingBar.Small">
+      <item name="android:progressDrawable">@drawable/kulturlotsecontrols_ratingbar_small_holo_light</item>
+      <item name="android:indeterminateDrawable">@drawable/kulturlotsecontrols_ratingbar_small_holo_light</item>
+  </style>
+
+  <style name="ToggleKulturlotsecontrols" parent="android:Widget.Holo.Light.Button.Toggle">
+      <item name="android:background">@drawable/kulturlotsecontrols_btn_toggle_holo_light</item>
+  </style>
+
+</resources>

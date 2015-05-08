@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>de.appwerft.kulturlotse</id>
     <name>Kulturlotse</name>
-    <version>1.0</version>
+    <version>1.6.1</version>
     <publisher>fuerst</publisher>
     <url>http://</url>
     <description>undefined</description>
@@ -14,6 +14,10 @@
     <analytics>false</analytics>
     <guid>2f52b781-531b-4e84-84d2-3ef4c96c05e7</guid>
     <property name="ti.ui.defaultunit" type="string">dp</property>
+    <property name="categories" type="string">Musik/Konzert,Ausstellungen,Film/TV,Märkte/Feste,❖ Sonstiges ❖,Lesungen/Führungen,Kinder/Jugendliche</property>
+    <property name="ENDPOINT" type="string">http://www.kulturlotse.de/rest/</property>
+    <property name="DATABASE" type="string">DATABASE</property>
+    <property name="gooplaces" type="string">AIzaSyD1nGMDndlYPly6gD_8xIt5zLniSE6O9es</property>
     <ios>
         <plist>
             <dict>
@@ -40,14 +44,30 @@
         </plist>
     </ios>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <tool-api-level>14</tool-api-level>
-        <manifest android:versionCode="1" android:versionName="1.0.0"
+        <manifest android:versionCode="161" android:versionName="1.6.1"
             package="de.appwerft.kulturlotse" xmlns:android="http://schemas.android.com/apk/res/android">
-            <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="16"/>
+            <uses-sdk android:minSdkVersion="14"/>
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.WAKE_LOCK"/>
+            <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+            <uses-permission android:name="android.permission.VIBRATE"/>
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+            <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+           <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+           -->
+            <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+            <uses-permission android:name="de.appwerft.kulturlotse.permission.MAPS_RECEIVE"/>
+            <permission
+                android:name="de.appwerft.kulturlotse.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
             <application android:debuggable="false"
                 android:icon="@drawable/appicon"
                 android:label="Kulturlotse"
                 android:name="KulturlotseApplication" android:theme="@style/Theme.Kulturlotse">
+                <meta-data
+                    android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAr4ndJer82yiI-OnVh1PrGJrWK4E7gUWw"/>
                 <activity
                     android:configChanges="keyboardHidden|orientation|screenSize"
                     android:label="@string/app_name"
@@ -81,6 +101,10 @@
     <modules>
         <module platform="android">com.alcoapps.actionbarextras</module>
         <module platform="android">de.manumaticx.androidflip</module>
+        <module platform="android">com.rkam.swiperefreshlayout</module>
+        <module platform="iphone">ti.map</module>
+        <module platform="android">ti.map</module>
+        <module platform="android">yy.tidialogs</module>
     </modules>
     <deployment-targets>
         <target device="android">true</target>

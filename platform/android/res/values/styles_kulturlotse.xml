@@ -19,8 +19,8 @@
 
 <resources>
 
-    <style name="Theme.Kulturlotse" parent="@style/Theme.AppCompat.Light">
-    	 
+   <style name="Theme.Kulturlotse" parent="@style/Theme.AppCompat.Light">
+    <!--	<style name="Theme.Kulturlotse" parent="@style/Theme.Kulturlotsecontrols">-->
     	<!--<item name="statusBarColor">@color/transparent</item>-->
     	<item name="actionBarItemBackground">@drawable/selectable_background_kulturlotse</item>
         <item name="popupMenuStyle">@style/PopupMenu.Kulturlotse</item>

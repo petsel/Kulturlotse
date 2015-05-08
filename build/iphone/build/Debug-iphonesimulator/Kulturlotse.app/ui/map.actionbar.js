@@ -1,0 +1,1 @@
+/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/Resources/ui/map.actionbar.js

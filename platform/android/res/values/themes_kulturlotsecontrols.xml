@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="Kulturlotsecontrols" parent="@style/_Kulturlotsecontrols"/>
+
+  <style name="_Kulturlotsecontrols" parent="Theme.AppCompat.Light">
+
+    <item name="android:editTextStyle">@style/EditTextKulturlotsecontrols</item>
+
+    <item name="android:textColorHighlight">#99ff8800</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewKulturlotsecontrols</item>
+
+    <item name="android:checkboxStyle">@style/CheckBoxKulturlotsecontrols</item>
+
+    <item name="android:radioButtonStyle">@style/RadioButtonKulturlotsecontrols</item>
+
+    <item name="android:buttonStyle">@style/ButtonKulturlotsecontrols</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonKulturlotsecontrols</item>
+
+    <item name="android:spinnerStyle">@style/SpinnerKulturlotsecontrols</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemKulturlotsecontrols</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarKulturlotsecontrols</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarKulturlotsecontrols</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarKulturlotsecontrols</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigKulturlotsecontrols</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallKulturlotsecontrols</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleKulturlotsecontrols</item>
+
+    <item name="android:listViewStyle">@style/ListViewKulturlotsecontrols</item>
+
+    <item name="android:listViewWhiteStyle">@style/ListViewKulturlotsecontrols.White</item>
+
+    <item name="android:spinnerItemStyle">@style/SpinnerItemKulturlotsecontrols</item>
+
+  </style>
+
+</resources>
