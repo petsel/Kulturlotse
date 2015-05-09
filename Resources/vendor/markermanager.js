@@ -25,7 +25,7 @@ Module.prototype = {
                 lng : parseFloat(res.getFieldByName('lng')).toFixed(6),
                 name : res.getFieldByName('name'),
                 id : res.getFieldByName('rowid')
-            });
+            }); 
             res.next();
         } 
         res.close();
