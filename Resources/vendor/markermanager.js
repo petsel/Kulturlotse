@@ -27,7 +27,7 @@ Module.prototype = {
                 id : res.getFieldByName('rowid')
             });
             res.next();
-        }
+        } 
         res.close();
         
     },
