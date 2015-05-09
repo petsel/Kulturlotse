@@ -1,7 +1,4 @@
+builds
 tiapp.xml
-build
-*.apk
-manifest
 .project
-.settings
-*.apk
+manifest2
