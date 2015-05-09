@@ -3,4 +3,4 @@
     require('ui/main.window')().open();
     require('vendor/versionsreminder')();
     
- }();
+}();

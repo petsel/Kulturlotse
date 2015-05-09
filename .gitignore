@@ -1,0 +1,7 @@
+tiapp.xml
+build
+*.apk
+manifest
+.project
+.settings
+*.apk
