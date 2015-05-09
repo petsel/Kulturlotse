@@ -19,7 +19,7 @@ Module.prototype = {
         var link = Ti.Database.open(this.DB);
         var res = link.execute('SELECT * FROM `'+this.tablename+'` WHERE lat>? AND lat<? AND lng>? AND lng<? LIMIT ?', args.latitude - args.latitudeDelta, args.latitude + args.latitudeDelta, args.longitude - args.longitudeDelta, args.longitude + args.longitudeDelta, this.limit || 120);
         var items = [];
-        while (res.isValidRow()) {  
+        while (res.isValidRow()) {
             items.push({
                 lat : parseFloat(res.getFieldByName('lat')).toFixed(6),
                 lng : parseFloat(res.getFieldByName('lng')).toFixed(6),
