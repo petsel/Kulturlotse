@@ -2,7 +2,7 @@ var ActionBar = require('com.alcoapps.actionbarextras');
 
 module.exports = function(_event) {
     var Model = new (require('adapter/events'))();
-    var stadtradpins = require('model/stadtrad').map(function(velo) {
+    /*var stadtradpins = require('model/stadtrad').map(function(velo) {
         return require('ti.map').createAnnotation({
             latitude : velo.lat,
             longitude : velo.lng,
@@ -10,7 +10,7 @@ module.exports = function(_event) {
             subtitle : velo.hal2option.bikelist.length + ' Räder',
             title : velo.hal2option.tooltip.replace(/&nbsp;/g, ' ').replace(/^'/, '').replace(/'$/, '').replace(/^[\d]+/, '')
         });
-    });
+    });*/
     var loc = Model.getLocationById(_event.locationId);
     var routes = [];
     var self = Ti.UI.createWindow({
@@ -22,11 +22,11 @@ module.exports = function(_event) {
         var address = (loc.latitude && loc.longitude) ? loc.latitude + ',' + loc.longitude : _event.locationStreet + ',' + _event.locationPlz + ',' + _event.locationCity;
         GeoRoute.getRoute(_e.coords, _event.locationCity + ',' + _event.locationStreet);
         self.addEventListener('modechanged', function(_mode) {
-            if (_mode.stadtrad) {
+            /*if (_mode.stadtrad) {
                 map.addAnnotations(stadtradpins);
             } else {
                 map.removeAnnotations(stadtradpins);
-            }
+            }*/
             GeoRoute.getRoute(_e.coords, _event.locationCity + ',' + _event.locationStreet);
         });
     });
