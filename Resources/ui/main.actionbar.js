@@ -20,7 +20,6 @@ module.exports = function(_event) {
                 icon:  Ti.App.Android.R.drawable.ic_action_hhmap,
                 showAsAction : Ti.Android.SHOW_AS_ACTION_IF_ROOM,
                      }).addEventListener("click", function() {
-                            console.log('click='+ day);
                             require('ui/map.window')({
                                  day : day
                             }).open();

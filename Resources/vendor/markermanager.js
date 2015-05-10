@@ -5,7 +5,8 @@ const RASTER = 25;
 
 var Module = function() {
     var args = arguments[0] || {};
-
+     this.visibleMarkers = [];
+    this.MarkersinRange = [];
     this.DB = args.databasename || console.log('Error: database is missing for markermanager.');
     this.map = args.map || console.log('Error: map is missing for markermanager.');
     this.tablename = args.tablename;

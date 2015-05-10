@@ -28,8 +28,11 @@ module.exports = function(_event) {
                  switch (item.checked) {
                      case false:
                         item.checked = true;
-                     require('adapter/stadtrad')({
+                        _event.source.progress.setRefreshing(true);
+ 
+                        require('adapter/stadtrad')({
                              done : function(stadtraeder) {
+                                _event.source.progress.setRefreshing(false); 
                                var raedertotal = 0;
                                var ohneraeder = 0;  
                                _event.source.stadtradannotations = stadtraeder.map(function(velo) {
@@ -66,24 +69,23 @@ module.exports = function(_event) {
                          _event.source.mapView.removeAnnotations(_event.source.stadtradannotations);
                      break;
                  }
-                 
-                 
              });
               _menuevent.menu.add({
-                title : 'Car2Go',
+                title : 'car2Go',
                 itemId : 7,
                 checkable: true,
                 icon:  Ti.App.Android.R.drawable.ic_action_filter,
                 showAsAction : Ti.Android.SHOW_AS_ACTION_NEVER,
-                
              }).addEventListener("click", function() {
                  var item = _menuevent.menu.findItem(7);
                  Ti.Media.vibrate([0,1]);
                  switch (item.checked) {
                      case false:
                          item.checked = true;
+                         _event.source.progress.setRefreshing(true);
                          require('adapter/car2go')({
                              done:function(placemarks) {
+                                _event.source.progress.setRefreshing(false); 
                                 Ti.UI.createNotification({
                                     message: placemarks.length + ' Car2Go-Autos verfügbar'
                                 }).show();

@@ -26,7 +26,18 @@ module.exports = function() {
         enableZoomControls : false,
         mapType : Map.NORMAL_TYPE,
     });
+    var view = Ti.UI.createView({
+        top : 0,
+        height : 20
+    });
     self.add(self.mapView);
+    self.progress=require('com.rkam.swiperefreshlayout').createSwipeRefresh({
+        view : view,
+        height : 20,top:0,
+        width : Ti.UI.FILL
+    });
+    self.add(self.progress);
+   
     self.mapView.addEventListener('complete', function() {
         // hvv pins:
         self.hvvannotations = HVV.getStations(self.mapView.region).map(function(hvv) {
@@ -83,7 +94,6 @@ module.exports = function() {
             GeoLocation.getLatLng(event.locationPlz + ' ' + event.locationCity + ',' + event.locationStreet);
         }
     });
-
     self.addEventListener('open', require('ui/map.actionbar'));
     self.mapView.addEventListener('regionchanged', onRegionChanged);
     self.mapView.addEventListener('click', function(_e) {
@@ -98,7 +108,6 @@ module.exports = function() {
             //     self.mapView.fireEvent('regionchanged', region);
         }, 700);
     });
-    return self;
     function onRegionChanged(_e) {
         function isIdinList(id) {
             for (var i = 0; i < self.hvvannotations.length; i++) {
@@ -107,6 +116,7 @@ module.exports = function() {
             }
             return false;
         }
+
         if (self.locked == false) {
             self.locked = true;
             setTimeout(function() {
@@ -121,21 +131,20 @@ module.exports = function() {
                         longitude : hvv.lng,
                         id : hvv.id,
                         title : hvv.name,
-                      //  subtitle : hvv.lat + ',' + hvv.lng,
+                        //  subtitle : hvv.lat + ',' + hvv.lng,
                         image : '/images/hvv.png'
                     });
                     self.hvvannotations.push(pin);
                     to_added_annotations.push(pin);
                 }
             });
-            map.addAnnotations(to_added_annotations);
+            self.mapView.addAnnotations(to_added_annotations);
         } else {
-            console.log("Warning: map was locked");
             setTimeout(function() {
                 self.locked = false;
             }, 50);
         }
     }
-   
 
+    return self;
 };
