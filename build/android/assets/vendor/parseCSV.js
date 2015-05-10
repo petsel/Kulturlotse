@@ -1,1 +1,1 @@
-module.exports=function(e){for(var a=[],n=!1,t=col=c=0;c<e.length;c++){var r=e[c],i=e[c+1];a[t]=a[t]||[],a[t][col]=a[t][col]||"",'"'==r&&n&&'"'==i?(a[t][col]+=r,++c):'"'!=r?","!=r||n?"\n"!=r||n?a[t][col]+=r:(++t,col=0):++col:n=!n}return a};
+/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/Resources/vendor/parseCSV.js

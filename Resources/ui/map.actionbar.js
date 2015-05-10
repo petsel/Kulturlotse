@@ -71,7 +71,7 @@ module.exports = function(_event) {
                  }
              });
               _menuevent.menu.add({
-                title : 'car2Go',
+                title : 'car2go',
                 itemId : 7,
                 checkable: true,
                 icon:  Ti.App.Android.R.drawable.ic_action_filter,
@@ -99,7 +99,10 @@ module.exports = function(_event) {
                                             subtitle: placemark.name
                                      });
                                 });
-                                _event.source.mapView.addAnnotations(_event.source.car2gopins);
+                                _event.source.car2gopins.forEach(function(p){
+                                     _event.source.mapView.addAnnotation(p);
+                                });
+                               
                             }});
                         
       

@@ -37,6 +37,7 @@ Module.prototype = {
             timeout : 30000,
             onload : function() {
                 if (this.status == 200) {
+                   
                     var json = JSON.parse(this.responseText);
                     var link = Ti.Database.open(DB);
                     link.execute("BEGIN");
@@ -152,6 +153,9 @@ Module.prototype = {
                     var end = new Date().getTime();
                     console.log(_date + '    status=' + this.status + '      time=' + ((end - start) / 1000).toFixed(1) + 'sec.    ' + 'etag=' + xhr.getResponseHeader('ETag'));
                     if (this.status == 200) {
+                         Ti.UI.createNotification({
+                        message : 'Neue Daten für den\n ' + _date + '\ngeholt'
+                    }).show();
                         var json = JSON.parse(this.responseText);
                         var link = Ti.Database.open(DB);
                         link.execute("BEGIN");
@@ -178,7 +182,7 @@ Module.prototype = {
             var res = link.execute("SELECT hash FROM days WHERE day=?", _date);
             if (res.isValidRow() && ok) {
                 xhr.setRequestHeader('If-None-Match', res.getFieldByName('hash'));
-            }    
+            }
             res.close();
             link.close();
             xhr.send();

@@ -1,6 +1,9 @@
 module.exports = function(args) {
     var xhr = Ti.Network.createHTTPClient({
+        timeout :30000,
         onload : function() {
+             var end = new Date().getTime();
+            console.log('car2go=time=' + ((end - start) / 1000).toFixed(3) + 'sec.');
             args.done && args.done(JSON.parse(this.responseText).marker);
         }
     });
@@ -33,5 +36,5 @@ module.exports = function(args) {
         key : '',
         webfirma_id : '510'
     });
-
+    var start = new Date().getTime();
 };

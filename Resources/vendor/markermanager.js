@@ -5,7 +5,7 @@ const RASTER = 25;
 
 var Module = function() {
     var args = arguments[0] || {};
-     this.visibleMarkers = [];
+    this.visibleMarkers = [];
     this.MarkersinRange = [];
     this.DB = args.databasename || console.log('Error: database is missing for markermanager.');
     this.map = args.map || console.log('Error: map is missing for markermanager.');
@@ -36,7 +36,8 @@ Module.prototype = {
         // group in tiles (RASTER in every direction => max. RASTER*RASTER on map)
         var tilewidth = args.longitudeDelta / RASTER;
         var tileheight = args.latitudeDelta / RASTER;
-        var tiles = {};  // or []
+        var tiles = {};
+        // or []
         items.forEach(function(item) {
             // calculation of key:
             var xkey = Math.floor((item.lng - args.longitude - args.longitudeDelta / 2) / RASTER);

@@ -1,1 +1,1 @@
-module.exports=function(e){for(var a=e.length,n=0,r=[],i=0,t=0;a>n;){var o,c=0,d=0;do o=e.charCodeAt(n++)-63,d|=(31&o)<<c,c+=5;while(o>=32);var m=1&d?~(d>>1):d>>1;i+=m,c=0,d=0;do o=e.charCodeAt(n++)-63,d|=(31&o)<<c,c+=5;while(o>=32);var s=1&d?~(d>>1):d>>1;t+=s,r.push([1e-5*i,1e-5*t])}for(var l=[],k=0;k<r.length;k++)l.push({latitude:r[k][0],longitude:r[k][1]});return l};
+/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/Resources/vendor/decodePolyline.js

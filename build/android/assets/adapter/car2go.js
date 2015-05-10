@@ -1,1 +1,1 @@
-module.exports=function(e){var o=Ti.Network.createHTTPClient({onload:function(){e.done&&e.done(JSON.parse(this.responseText).placemarks)}});o.open("GET","https://www.car2go.com/api/v2.1/vehicles?loc=hamburg&oauth_consumer_key=car2gowebsite&format=json"),o.send()};
+/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/Resources/adapter/car2go.js

@@ -4,15 +4,24 @@ var GeoLocation = new (require('vendor/georoute'))();
 var Map = require('ti.map');
 var HVV = new (require('adapter/hvv'))();
 
-var region = {
-    latitude : 53.56,
-    longitude : 10,
-    latitudeDelta : 0.1,
-    longitudeDelta : 0.1,
-    limit : 50
-};
-
 module.exports = function() {
+    var region = {
+        latitude : 53.56,
+        longitude : 10,
+        latitudeDelta : 0.1,
+        longitudeDelta : 0.1,
+        limit : 50
+    };
+    if (Ti.App.Properties.hasProperty('LASTREGION')) {
+        var lastregion = JSON.parse(Ti.App.Properties.getString('LASTREGION'));
+        region = {
+            latitude : lastregion.latitude,
+            longitude : lastregion.longitude,
+            latitudeDelta : lastregion.latitudeDelta,
+            longitudeDelta : lastregion.longitudeDelta,
+            limit : 50
+        };
+    }
     var event = arguments[0] || {};
     var Model = new (require('adapter/events'))();
     var self = Ti.UI.createWindow({
@@ -22,7 +31,7 @@ module.exports = function() {
     });
     self.mapView = Map.createView({
         region : region,
-        animated : true,
+        animate : true,
         enableZoomControls : false,
         mapType : Map.NORMAL_TYPE,
     });
@@ -31,13 +40,14 @@ module.exports = function() {
         height : 20
     });
     self.add(self.mapView);
-    self.progress=require('com.rkam.swiperefreshlayout').createSwipeRefresh({
+    self.progress = require('com.rkam.swiperefreshlayout').createSwipeRefresh({
         view : view,
-        height : 20,top:0,
+        height : 20,
+        top : 0,
         width : Ti.UI.FILL
     });
     self.add(self.progress);
-   
+
     self.mapView.addEventListener('complete', function() {
         // hvv pins:
         self.hvvannotations = HVV.getStations(self.mapView.region).map(function(hvv) {
@@ -117,6 +127,13 @@ module.exports = function() {
             return false;
         }
 
+
+        Ti.App.Properties.setString('LASTREGION', JSON.stringify({
+            latitude : _e.latitude,
+            longitude : _e.longitude,
+            latitudeDelta : _e.latitudeDelta,
+            longitudeDelta : _e.longitudeDelta
+        }));
         if (self.locked == false) {
             self.locked = true;
             setTimeout(function() {
