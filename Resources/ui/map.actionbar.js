@@ -71,7 +71,7 @@ module.exports = function(_event) {
                  }
              });
               _menuevent.menu.add({
-                title : 'car2go',
+                title : 'car2go anzeigen',
                 itemId : 7,
                 checkable: true,
                 icon:  Ti.App.Android.R.drawable.ic_action_filter,
@@ -83,7 +83,7 @@ module.exports = function(_event) {
                      case false:
                          item.checked = true;
                          _event.source.progress.setRefreshing(true);
-                         require('adapter/car2go')({
+                         require('adapter/car2go').load({
                              done:function(placemarks) {
                                 _event.source.progress.setRefreshing(false); 
                                 Ti.UI.createNotification({
@@ -99,9 +99,7 @@ module.exports = function(_event) {
                                             subtitle: placemark.name
                                      });
                                 });
-                                _event.source.car2gopins.forEach(function(p){
-                                     _event.source.mapView.addAnnotation(p);
-                                });
+                                _event.source.mapView.addAnnotations(_event.source.car2gopins);
                                
                             }});
                         
@@ -115,6 +113,17 @@ module.exports = function(_event) {
                  
                  
              });
+             _menuevent.menu.add({
+                title : 'car2go-Liste',
+                itemId : 8,
+               
+                icon:  Ti.App.Android.R.drawable.ic_action_filter,
+                showAsAction : Ti.Android.SHOW_AS_ACTION_NEVER,
+             }).addEventListener("click", function() {
+                 require('ui/stations.window')({
+                    type : 'car2go'
+                }).open();
+             });   
              _menuevent.menu.add({
                 title : 'Luftbild',
                 itemId : 3,

@@ -154,7 +154,7 @@ Module.prototype = {
                     console.log(_date + '    status=' + this.status + '      time=' + ((end - start) / 1000).toFixed(1) + 'sec.    ' + 'etag=' + xhr.getResponseHeader('ETag'));
                     if (this.status == 200) {
                          Ti.UI.createNotification({
-                        message : 'Neue Daten für den\n ' + _date + '\ngeholt'
+                        message : 'Neue Daten für den\n ' + Moment(_date).format('D.M. YYYY') + '\ngeholt'
                     }).show();
                         var json = JSON.parse(this.responseText);
                         var link = Ti.Database.open(DB);
@@ -177,7 +177,6 @@ Module.prototype = {
             xhr.open("GET", url);
             xhr.setRequestHeader('Accept-Type', 'application/json');
             xhr.setRequestHeader('Accept', 'application/json');
-            xhr.setRequestHeader('Accept-Encoding', 'gzip, deflate');
             var link = Ti.Database.open(DB);
             var res = link.execute("SELECT hash FROM days WHERE day=?", _date);
             if (res.isValidRow() && ok) {

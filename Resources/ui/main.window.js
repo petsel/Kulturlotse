@@ -7,7 +7,7 @@ function Module() {
         fullscreen : true
     });
     var pages = [];
-    for (var i = -1; i < 14; i++) {
+    for (var i = -1; i < 5; i++) {
         pages[i] = require('ui/eventlist')(i - 1);
     }
     var FlipView = require('vendor/pageflip.widget')({

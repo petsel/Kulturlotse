@@ -1,1 +1,0 @@
-/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/Resources/model/HVVSTATIONS.sql

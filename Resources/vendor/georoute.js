@@ -9,14 +9,20 @@ var Module = function() {
 };
 Module.prototype = {
     getLocation : function() {
+        var args = arguments[0] || {};
         var that = this;
         if (Ti.Geolocation.locationServicesEnabled) {
             Ti.Geolocation.purpose = 'Deine Position für Routingberechnung';
+            console.log('try to get user position');
             Ti.Geolocation.getCurrentPosition(function(e) {
                 if (e.error) {
                     Ti.API.error('Error: ' + e.error);
                 } else {
+                    console.log('Position found');
                     that.coords = e.coords;
+                    args.done && args.done({
+                        coords : e.coords
+                    });
                     that.fireEvent('position', {
                         coords : e.coords
                     });

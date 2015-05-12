@@ -8,7 +8,6 @@ module.exports = function(args) {
         }
     });
     xhr.open('GET', 'http://stadtrad.hamburg.de/kundenbuchung/hal2ajax_process.php');
-    xhr.setRequestHeader('Accept-Encoding', 'gzip, deflate');
     xhr.setRequestHeader('Accept', 'text/javascript, application/javascript');
     xhr.setRequestHeader('User-Agent','Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:37.0) Gecko/20100101 Firefox/37.0');
     xhr.send({

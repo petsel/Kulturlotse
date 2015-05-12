@@ -1,0 +1,1 @@
+/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/Resources/adapter/car2go.js

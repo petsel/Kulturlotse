@@ -145,3 +145,61 @@ exports.eventsbylocation = {
         }]
     }]
 };
+exports.stations = {
+    properties : {
+        height : Ti.UI.SIZE,
+        backgroundColor : 'white',
+    },
+    childTemplates : [{
+        type : 'Ti.UI.ImageView',
+        bindId : 'image',
+        properties : {
+            top : 0,
+            defaultImage : '/assets/car2go.png',
+            left : 0,
+            width : 90,
+            height : 60
+        }
+
+    }, {
+        type : 'Ti.UI.View',
+        properties : {
+            width : Ti.UI.FILL,
+            layout : 'vertical',
+            left : 100,
+            top : 0,
+            height : Ti.UI.SIZE,
+            right : 15
+        },
+        childTemplates : [{
+            type : 'Ti.UI.Label',
+            bindId : 'title',
+            properties : {
+                top : 5,
+                color : '#444',
+                font : {
+                    fontSize : 20,
+                    fontFamily : 'PT Serif Bold'
+                },
+                left : 0,
+                width : Ti.UI.FILL,
+            }
+
+        }, {
+            type : 'Ti.UI.Label',
+            bindId : 'dist',
+            properties : {
+                left : 0,
+                top : 0,
+                text : '',
+                height : Ti.UI.SIZE,
+                touchEnabled : false,
+                font : {
+                    fontSize : 14,
+                    fontFamily : 'DroidSans'
+                },
+                color : '#333'
+            }
+        }]
+    }]
+};

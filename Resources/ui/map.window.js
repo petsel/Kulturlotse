@@ -32,7 +32,10 @@ module.exports = function() {
     self.mapView = Map.createView({
         region : region,
         animate : true,
+        compassEnabled : false,
+        userLocation : true,
         enableZoomControls : false,
+        userLocationButton : true,
         mapType : Map.NORMAL_TYPE,
     });
     var view = Ti.UI.createView({
@@ -106,9 +109,20 @@ module.exports = function() {
     });
     self.addEventListener('open', require('ui/map.actionbar'));
     self.mapView.addEventListener('regionchanged', onRegionChanged);
-    self.mapView.addEventListener('click', function(_e) {
-        if (_e.clicksource != null && _e.annotation && _e.annotation.type) {
-            console.log(_e.annotation.type);
+    self.mapView.addEventListener('click', onPinclick);
+    function onPinclick(_e) {
+        self.mapView.removeEventListener('click', onPinclick);
+        setTimeout(function() {
+            self.mapView.addEventListener('click', onPinclick);
+        }, 700);
+        if (_e.clicksource != null && _e.annotation && _e.annotation.type && _e.clicksource != 'pin') {
+            console.log(_e.clicksource);
+            if (_e.annotation.type && _e.annotation.type == 'car2go') {
+                Ti.Media.vibrate([0,5]);
+                require('ui/stations.window')({
+                    type : _e.annotation.type
+                }).open();
+            }
         }
         self.locked = true;
         // self.mapView.removeEventListener('regionchanged', onRegionChanged);
@@ -117,7 +131,9 @@ module.exports = function() {
             var region = self.mapView.getRegion();
             //     self.mapView.fireEvent('regionchanged', region);
         }, 700);
-    });
+
+    }
+
     function onRegionChanged(_e) {
         function isIdinList(id) {
             for (var i = 0; i < self.hvvannotations.length; i++) {
@@ -140,6 +156,12 @@ module.exports = function() {
                 self.locked = false;
             }, 50);
             var map = _e.source;
+            if (_e.latitudeDelta > 0.2) {
+                console.log(self.hvvannotations.length + ' annotations removed');
+                map.removeAnnotations(self.hvvannotations);
+                self.hvvannotations = [];
+                return;
+            }
             var to_added_annotations = [];
             HVV.getStations(_e).forEach(function(hvv) {
                 if (!isIdinList(hvv.id)) {
