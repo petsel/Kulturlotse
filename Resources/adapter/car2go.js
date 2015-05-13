@@ -9,7 +9,7 @@ function getDist(lat1, lon1, lat2, lon2) {
     return Math.round(1000*Math.acos(Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)) * 180 / Math.PI * 60 * 1.1515 * 1.609344);
 }
 
-exports.load = function(args) {
+exports.loadFreeVehicles = function(args) {
     var xhr = Ti.Network.createHTTPClient({
         timeout : 30000,
         onload : function() {
@@ -25,7 +25,22 @@ exports.load = function(args) {
     var start = new Date().getTime();
 };
 
-exports.get = function(args) {
+exports.loadOperatingAreas = function(args) {
+    var xhr = Ti.Network.createHTTPClient({
+        timeout : 30000,
+        onload : function() {
+            Ti.App.Properties.setList('CAR2GOAREAS', JSON.parse(this.responseText).placemarks);
+            args.done && args.done(JSON.parse(this.responseText).placemarks);
+        }
+    });
+    xhr.open('GET', 'https://www.car2go.com/api/v2.1/operationareas?loc=hamburg&oauth_consumer_key=car2gowebsite&format=json');
+    xhr.setRequestHeader('Accept', 'text/javascript, application/javascript');
+    xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:37.0) Gecko/20100101 Firefox/37.0');
+    xhr.send();
+};
+
+
+exports.getFreeVehicles = function(args) {
     var Geo = new (require('vendor/georoute'))();
     Geo.getLocation({
         done : function(_e) {

@@ -16,7 +16,7 @@ function Module() {
         defaultItemTemplate : 'stations',
     });
     self.add(self.list);
-    require('adapter/car2go').get({
+    require('adapter/car2go').getFreeVehicles({
         done : function(_payload) {
             self.list.sections[0].items = _payload.map(function(_station) {
                 return {

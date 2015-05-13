@@ -178,7 +178,7 @@ exports.stations = {
                 top : 5,
                 color : '#444',
                 font : {
-                    fontSize : 20,
+                    fontSize : 18,
                     fontFamily : 'PT Serif Bold'
                 },
                 left : 0,

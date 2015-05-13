@@ -70,8 +70,9 @@ module.exports = function(_event) {
                      break;
                  }
              });
+              // car2go Free Vehicles:
               _menuevent.menu.add({
-                title : 'car2go anzeigen',
+                title : 'car2go (freie Autos)',
                 itemId : 7,
                 checkable: true,
                 icon:  Ti.App.Android.R.drawable.ic_action_filter,
@@ -83,7 +84,7 @@ module.exports = function(_event) {
                      case false:
                          item.checked = true;
                          _event.source.progress.setRefreshing(true);
-                         require('adapter/car2go').load({
+                         require('adapter/car2go').loadFreeVehicles({
                              done:function(placemarks) {
                                 _event.source.progress.setRefreshing(false); 
                                 Ti.UI.createNotification({
@@ -94,8 +95,9 @@ module.exports = function(_event) {
                                             latitude : placemark.coordinates[1],
                                             longitude : placemark.coordinates[0],
                                             image : '/images/car2go.png',
+                                            rightView : Ti.UI.createImageView({width:'200dp',height:'120dp',image:'/images/car2gologo.png'}),
                                             type: 'car2go',
-                                            title : placemark.address,
+                                            title : placemark.address.split(',')?placemark.address.split(',')[0]:'',
                                             subtitle: placemark.name
                                      });
                                 });
@@ -110,20 +112,69 @@ module.exports = function(_event) {
                         _event.source.car2gopins && _event.source.mapView.removeAnnotations(_event.source.car2gopins);
                      break;
                  }
-                 
-                 
              });
-             _menuevent.menu.add({
-                title : 'car2go-Liste',
+              // car2go ZONEN:
+              _menuevent.menu.add({
+                title : 'car2go (NGAs)',
                 itemId : 8,
-               
+                checkable: true,
                 icon:  Ti.App.Android.R.drawable.ic_action_filter,
                 showAsAction : Ti.Android.SHOW_AS_ACTION_NEVER,
              }).addEventListener("click", function() {
-                 require('ui/stations.window')({
-                    type : 'car2go'
-                }).open();
-             });   
+                 var item = _menuevent.menu.findItem(8);
+                 Ti.Media.vibrate([0,1]);
+                 switch (item.checked) {
+                     case false:
+                         item.checked = true;
+                         _event.source.progress.setRefreshing(true);
+                         require('adapter/car2go').loadOperatingAreas({
+                             done : function(_placemarks) {
+                                _event.source.nogoareas = [];   
+                                _event.source.progress.setRefreshing(false);
+                                _event.source.nogoareas = [];
+                                _placemarks.forEach(function(placemark) {
+                                    if (placemark.zoneType == "excluded") {
+                                    var points = [];
+                                    placemark.coordinates.forEach(function(coord,ndx){
+                                        switch (ndx%3) {
+                                            case 0:
+                                             points[parseInt(ndx/3)] = {longitude:parseFloat(coord)};
+                                            break;
+                                            case 1:
+                                             points[parseInt(ndx/3)].latitude = parseFloat(coord);
+                                            break;
+                                         }   
+                                    });
+                                    _event.source.nogoareas.push(Map.createPolygon({
+                                            points : points,
+                                            strokeColor: "red",
+                                            opacity:0.6,
+                                            strokeWidth: 0,
+                                            fillColor: "red",
+                                     }));
+                                   }
+                                });
+                                _event.source.nogoareas.forEach(function(polygon){
+                                     _event.source.mapView.addPolygon(polygon);
+                                })
+                               
+                               
+                            }});
+                        
+      
+                     break;
+                     case true:
+                         item.checked=false;
+                        if (_event.source.nogoareas) _event.source.nogoareas.forEach(function(a){
+                            _event.source.mapView.removePolygon(a);
+                        });
+                     break;
+                 }
+                 
+                 
+             });
+             
+             
              _menuevent.menu.add({
                 title : 'Luftbild',
                 itemId : 3,
