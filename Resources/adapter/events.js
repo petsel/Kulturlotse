@@ -59,6 +59,8 @@ Module.prototype = {
         Ti.App.Properties.hasProperty('location') && xhr.setRequestHeader('If-None-Match', Ti.App.Properties.getString('location'));
         xhr.setRequestHeader('Accept-Type', 'application/json');
         xhr.setRequestHeader('Accept', 'application/json');
+        xhr.setRequestHeader('Host', 'kulturlotse.de');
+        
         //    xhr.setRequestHeader('X-Kultur1otse',Ti.Utils.md5HexDigest(Math.random()));
         xhr.send();
     },

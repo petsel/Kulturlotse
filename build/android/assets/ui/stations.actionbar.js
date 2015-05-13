@@ -1,1 +1,1 @@
-var ActionBar=require("com.alcoapps.actionbarextras");module.exports=function(e){ActionBar.setTitle("Kulturlotse"),ActionBar.setSubtitle("car2go"),ActionBar.setFont("PT Serif Bold"),ActionBar.subtitleColor="#444";var a=e.source.getActivity();a&&(a.onCreateOptionsMenu=function(e){e.menu.clear(),a.actionBar.displayHomeAsUp=!0},a&&a.invalidateOptionsMenu(),a.actionBar.onHomeIconItemSelected=function(){e.source.close()})};
+/Users/fuerst/Documents/TitaniumStudioWorkspace/Kulturlotse/Resources/ui/stations.actionbar.js

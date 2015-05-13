@@ -2,6 +2,7 @@ var ActionBar = require('com.alcoapps.actionbarextras');
 var Map = require('ti.map');
 var Moment = require('vendor/moment');
 Moment.locale('de');
+var MarkerManager = require('vendor/markermanager');
 
 module.exports = function(_event) {
     var HVV = new (require('adapter/hvv'))();
@@ -85,11 +86,28 @@ module.exports = function(_event) {
                          item.checked = true;
                          _event.source.progress.setRefreshing(true);
                          require('adapter/car2go').loadFreeVehicles({
-                             done:function(placemarks) {
+                             done: function(placemarks) {
+                                 
+                                 
+                                 
                                 _event.source.progress.setRefreshing(false); 
                                 Ti.UI.createNotification({
-                                    message: placemarks.length + ' Car2Go-Autos verfügbar'
+                                    message: placemarks.length + ' car2go-Autos verfügbar'
                                 }).show();
+                                var Car2Go = new MarkerManager({
+                                    name: 'car2GO',
+                                    points : placemarks.map(function(placemark) {
+                                            return { 
+                                                lat : placemark.coordinates[1],
+                                                lng : placemark.coordinates[0]
+                                            };
+                                         }),
+                                    image: '/images/car2go.png',
+                                    map  : _event.source.mapView
+                                });
+                                
+                                
+                                return;
                                 _event.source.car2gopins = placemarks.map(function(placemark) {
                                     return Map.createAnnotation({
                                             latitude : placemark.coordinates[1],
