@@ -62,7 +62,7 @@ Module.prototype = {
         });
     },
     _updateMap : function(region) {
-        var RASTER = Math.round(Math.SQRT(this.maxannotations));
+        var RASTER = Math.round(Math.sqrt(this.maxannotations));
         var t_start = new Date().getTime();
         console.log('============REGIONCHANGED================');
         var items = [];
