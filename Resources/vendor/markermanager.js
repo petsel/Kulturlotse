@@ -1,12 +1,14 @@
-/* Usage:
- *
+/* 
+ * Ti.Markermanager
+ * 
+ * Usage:
  *
  var Car2Go = new (require('markermanager'))({
- name: 'car2go',
- points : points,
- image: '/images/car2go.png',
- map  : _event.source.mapView,
- maxannotations : 144
+   name: 'car2go',
+   points : points, [{lat:53,lng:10,title:'title',subtitle:'Subtitle'},{},{}]
+   image: '/images/car2go.png',
+   map  : mapView,
+   maxannotations : 144
  });
  Car2Go.destroy();
  *
