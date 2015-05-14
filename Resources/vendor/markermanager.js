@@ -22,7 +22,6 @@
 var Map = require('ti.map');
 
 var Module = function(options) {
-    this.eventhandlers = {};
     this.name = options.name;
     this.maxannotations = options.maxannotations || 100;
     if ( typeof options.map == 'object' && options.map.apiName && options.map.apiName == 'Ti.Proxy')
@@ -34,16 +33,19 @@ var Module = function(options) {
     this._importData();
     this._startMap();
     var that = this;
-    this.map.addEventListener('regionchanged', function(_region) {
+    var handleRegionChanged = function(_region) {
         that._updateMap(_region);
-    });
+    };
+    this.removeRegionChangedHandler = function () {
+     this.map.removeEventListener('regionchanged', handleRegionChanged);
+    };
+    this.map.addEventListener('regionchanged', handleRegionChanged);
     return this;
 };
 
 Module.prototype = {
     destroy : function() {
-        // TODO removing of event listener on map
-        // copy the object into array for map api:
+        this.removeRegionChangedHandler();
         var annotations = [];
         for (id in this.markers_in_map) {
             if (this.markers_in_map.hasOwnProperty(id)) {
