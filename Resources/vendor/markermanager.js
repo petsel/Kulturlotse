@@ -38,14 +38,17 @@ var Module = function(options) {
 
 Module.prototype = {
     destroy : function() {
+        // copy the object into array for map api:
         var annotations = [];
         for (id in this.markers_in_map) {
             if (this.markers_in_map.hasOwnProperty(id)) {
                 annotations.push(this.markers_in_map[id]);
             }
         }
+        console.log(annotations.length);
         this.map.removeAnnotations(annotations);
         this.markers_in_map = null;
+        // TODO removing of event listener on map
     },
     _importData : function() {
         var t_start = new Date().getTime();

@@ -38,6 +38,7 @@ module.exports = function(_event) {
                  Ti.Media.vibrate([0,1]);
                  switch (item.checked) {
                      case false:
+                        item.checked = true;
                         var HVV = new (require('adapter/hvv'))();
                         MM_HVV = new MarkerManager({
                             name : 'hvv',
@@ -47,9 +48,8 @@ module.exports = function(_event) {
                         });
                      break;
                      case true:
-                       item.checked=false;
+                       item.checked = false;
                        MM_HVV && MM_HVV.destroy();
-                       MM_HVV=null;
                     break;
                  }
              });
