@@ -1,12 +1,12 @@
 /* Usage:
  *
  *
- var Car2Go = new MarkerManager({
+ var Car2Go = new (require('markermanager'))({
  name: 'car2go',
  points : points,
  image: '/images/car2go.png',
  map  : _event.source.mapView,
- maxannotations : 130
+ maxannotations : 144
  });
  Car2Go.destroy();
  *
