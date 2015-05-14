@@ -1,22 +1,24 @@
 /* Usage:
  *
- * var Car2Go = new MarkerManager({
+ *
+ var Car2Go = new MarkerManager({
  name: 'car2go',
  points : points,
  image: '/images/car2go.png',
- map  : _event.source.mapView
+ map  : _event.source.mapView,
+ maxannotations : 130
  });
  Car2Go.destroy();
  *
  *
  */
 
-const RASTER = 25;
-
 var Map = require('ti.map');
 
 var Module = function(options) {
-    this.name = options.name || 'DB' + Math.random();
+    this.eventhandlers = {};
+    this.name = options.name;
+    this.maxannotations = options.maxannotations || 100;
     if ( typeof options.map == 'object' && options.map.apiName && options.map.apiName == 'Ti.Proxy')
         this.map = options.map;
     this.points = options.points;
@@ -36,26 +38,17 @@ Module.prototype = {
     destroy : function() {
         var annotations = [];
         for (id in this.markers_in_map) {
-            if (this.markers_in_map.hasOwnProperties(id)) {
-                annotation.push(this.markers_in_map[id]);
+            if (this.markers_in_map.hasOwnProperty(id)) {
+                annotations.push(this.markers_in_map[id]);
             }
         }
         this.map.removeAnnotations(annotations);
         this.markers_in_map = null;
-        var link = Ti.Database.open(this.name);
-        link.execute('DROP TABLE `pois`');
-        link.close();
     },
     _importData : function() {
         var t_start = new Date().getTime();
-        var link = Ti.Database.open(this.name);
-        link.execute('CREATE TABLE IF NOT EXISTS `points` (lat NUMBER, lng NUMBER, data TEXT)');
-        link.execute('BEGIN');
-        this.points.forEach(function(point) {
-            link.execute('INSERT OR REPLACE INTO `points` VALUES (?,?,?)', point.lat || point.latitude, point.lng || point.longitude, JSON.stringify(point));
-        });
-        link.execute('COMMIT');
-        link.close();
+        for (var i = 0; i < this.points.length; i++)
+            this.points[i].id = i;
         var t_end = new Date().getTime();
         console.log('MarkerManger: importData ' + (t_end - t_start) + ' ms.');
     },
@@ -69,60 +62,61 @@ Module.prototype = {
         });
     },
     _updateMap : function(region) {
+        var RASTER = Math.round(Math.SQRT(this.maxannotations));
         var t_start = new Date().getTime();
-        // get all markers in boundaries:
-        var link = Ti.Database.open(this.name);
-        var res = link.execute('SELECT * FROM `points` WHERE lat>? AND lat<? AND lng>? AND lng<?', region.latitude - region.latitudeDelta, region.latitude + region.latitudeDelta, region.longitude - region.longitudeDelta, region.longitude + region.longitudeDelta);
+        console.log('============REGIONCHANGED================');
         var items = [];
-        // theoretical to show markers
-        while (res.isValidRow()) {
-            items.push({
-                lat : parseFloat(res.getFieldByName('lat')),
-                lng : parseFloat(res.getFieldByName('lng')),
-                data : res.getFieldByName('data'), // qwe save string later we can export
-                id : res.getFieldByName('rowid')
-            });
-            res.next();
-        }
-        res.close();
-        link.close();
+        var south = region.latitude - region.latitudeDelta / 2;
+        var west = region.longitude - region.longitudeDelta / 2;
+        var north = region.latitude + region.latitudeDelta / 2;
+        var east = region.longitude + region.longitudeDelta / 2;
+        // get all markers in boundaries:
+        this.points.forEach(function(p) {
+            if (p.lat > south && p.lat < north && p.lng > west && p.lng < east)
+                items.push(p);
+        });
         var t_end = new Date().getTime();
-        console.log('MarkerManger: readData from DB ' + (t_end -t_start) + ' ms.');
+        console.log('MarkerManger: ' + items.length + ' marker found in region (unfiltered)');
+        console.log('MarkerManger: time for copy from DB to object ' + (t_end - t_start) + ' ms.');
         // grouping in object_of_tiles_with_markers (RASTER in every direction => max. RASTER*RASTER on map)
         var tilewidth = region.longitudeDelta / RASTER;
         var tileheight = region.latitudeDelta / RASTER;
         var object_of_tiles_with_markers = {};
         //
-         // clustering, we take only the first in list (our strategy):
-         var t_start = new Date().getTime();
+        // clustering, we take only the first in list (our strategy):
+        var t_start = new Date().getTime();
+        var tilecounter = 0;
         items.forEach(function(item) {
             // calculation of key:
-            var xkey = Math.floor((item.lng - region.longitude - region.longitudeDelta / 2) / RASTER);
-            var ykey = Math.floor((item.lat + region.latitude - region.latitudeDelta / 2) / RASTER);
-            var key = '' + xkey + ykey;
-            if (!object_of_tiles_with_markers[key])
+            var west = region.longitude - region.longitudeDelta / 2;
+            var south = region.latitude - region.latitudeDelta / 2;
+            var xgrid = region.longitudeDelta / RASTER;
+            var ygrid = region.latitudeDelta / RASTER;
+            var xkey = Math.floor((item.lng - west) / xgrid);
+            var ykey = Math.floor((item.lat - south) / ygrid);
+            var key = xkey + '_' + ykey;
+            if (!object_of_tiles_with_markers[key]) {
                 object_of_tiles_with_markers[key] = [item];
-            else
+                tilecounter++;
+            } else
                 object_of_tiles_with_markers[key].push(item);
         });
-       
+        console.log('MarkerManger: reduced number of markers ' + tilecounter);
         var markers = {
             to_render : {}, // this markers we will see
             to_add : [], // news ones
             to_remove : [] // obsolete ones
         };
-         var t_end = new Date().getTime();
-        console.log('MarkerManger: clustering ' + (t_end - t_start) + ' ms.');
         // compressing:
+        var compressed = 0;
         var t_start = new Date().getTime();
         for (key in object_of_tiles_with_markers) {
             if (object_of_tiles_with_markers.hasOwnProperty(key)) {
                 markers.to_render[object_of_tiles_with_markers[key][0].id] = object_of_tiles_with_markers[key][0];
             }
         }
-        var t_end = new Date().getTime();
-        console.log('MarkerManger: compressing ' + (t_end - t_start) + ' ms.');
-        object_of_tiles_with_markers = null;
+        console.log(markers.to_render);
+        // object_of_tiles_with_markers = null;
         /*
          * map api uses arrays for adding removing
          * for persisting we use objects. This accelerate the access
@@ -140,10 +134,12 @@ Module.prototype = {
         /* new ones: */
         for (id in markers.to_render) {
             if (markers.to_render.hasOwnProperty(id)) {
-                if (that.markers_in_map[id] == undefined) {
+                if (!that.markers_in_map[id]) {
                     var annotation = Map.createAnnotation({
                         latitude : markers.to_render[id].lat,
                         longitude : markers.to_render[id].lng,
+                        title : markers.to_render[id].title,
+                        subtitle : markers.to_render[id].subtitle,
                         image : that.image
                     });
                     markers.to_add.push(annotation);
@@ -157,6 +153,7 @@ Module.prototype = {
         this.map.addAnnotations(markers.to_add);
         var t_end = new Date().getTime();
         console.log('MarkerManger: end rendering ' + (t_end - t_start) + ' ms.');
+        this.fireEvent('complete');
     },
     fireEvent : function(_event, _payload) {
         if (this.eventhandlers[_event]) {

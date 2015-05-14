@@ -59,9 +59,9 @@ Module.prototype = {
         Ti.App.Properties.hasProperty('location') && xhr.setRequestHeader('If-None-Match', Ti.App.Properties.getString('location'));
         xhr.setRequestHeader('Accept-Type', 'application/json');
         xhr.setRequestHeader('Accept', 'application/json');
-        xhr.setRequestHeader('Host', 'kulturlotse.de');
-        
+        //   xhr.setRequestHeader('Host', 'kulturlotse.de');
         //    xhr.setRequestHeader('X-Kultur1otse',Ti.Utils.md5HexDigest(Math.random()));
+      //      console.log(url); 
         xhr.send();
     },
     getEventsByLocation : function(_locationId) {
@@ -153,7 +153,7 @@ Module.prototype = {
                 timeout : 30000,
                 onload : function() {
                     var end = new Date().getTime();
-                    console.log(_date + '    status=' + this.status + '      time=' + ((end - start) / 1000).toFixed(1) + 'sec.    ' + 'etag=' + xhr.getResponseHeader('ETag'));
+                    console.log(_date + '    status=' + this.status + '      time=' + ((end - start) / 1000).toFixed(3) + 'sec.    ' + 'etag=' + xhr.getResponseHeader('ETag'));
                     if (this.status == 200) {
                          Ti.UI.createNotification({
                         message : 'Neue Daten für den\n ' + Moment(_date).format('D.M. YYYY') + '\ngeholt'

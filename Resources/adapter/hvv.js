@@ -32,19 +32,14 @@ var Module = function() {
 
 Module.prototype = {
     getStations : function() {
-        var args = arguments[0] || {};
-        var x = args.longitudeDelta * .6,
-            y = args.latitudeDelta * .6;
         var link = Ti.Database.open(Ti.App.Properties.getString('DATABASE'));
-
-        var res = link.execute('SELECT rowid,lat,lng,name FROM `hvv` WHERE lat>? AND lat<? AND lng>? AND lng<? LIMIT ?', args.latitude - y, args.latitude + y, args.longitude - x, args.longitude + x, args.limit || 120);
+        var res = link.execute('SELECT lat,lng,name FROM `hvv` ');
         var items = [];
         while (res.isValidRow()) {
             items.push({
                 lat : parseFloat(res.getFieldByName('lat')).toFixed(6),
                 lng : parseFloat(res.getFieldByName('lng')).toFixed(6),
-                name : res.getFieldByName('name'),
-                id : res.getFieldByName('rowid')
+                name : res.getFieldByName('name')
             });
             res.next();
         }

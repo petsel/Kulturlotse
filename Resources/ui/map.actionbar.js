@@ -3,9 +3,12 @@ var Map = require('ti.map');
 var Moment = require('vendor/moment');
 Moment.locale('de');
 var MarkerManager = require('vendor/markermanager');
+var MM_Car2Go;
+var MM_HVV;
+var MM_StadtRAD;
 
 module.exports = function(_event) {
-    var HVV = new (require('adapter/hvv'))();
+    
     ActionBar.setTitle('Kulturlotse');
     ActionBar.setSubtitle(_event.source.day 
          ? Moment().format('D. MMM YYYY')
@@ -16,8 +19,48 @@ module.exports = function(_event) {
     if (!activity)  return;
         activity.onCreateOptionsMenu = function(_menuevent) {
              _menuevent.menu.clear();
+             /*
+              
+              *  H V V 
+              * 
+              * 
+              * 
+              * */
              _menuevent.menu.add({
-                title : 'StadtRAD Depots',
+                title : 'HVV',
+                itemId : 0,
+                checkable: true,
+                icon:  Ti.App.Android.R.drawable.ic_action_filter,
+                showAsAction : Ti.Android.SHOW_AS_ACTION_NEVER,
+                
+             }).addEventListener("click", function() {
+                 var item = _menuevent.menu.findItem(0);
+                 Ti.Media.vibrate([0,1]);
+                 switch (item.checked) {
+                     case false:
+                        var HVV = new (require('adapter/hvv'))();
+                        MM_HVV = new MarkerManager({
+                            name : 'hvv',
+                            map  : _event.source.mapView,
+                            points : HVV.getStations(),
+                            image : '/images/hvv.png' 
+                        });
+                     break;
+                     case true:
+                       item.checked=false;
+                       MM_HVV && MM_HVV.destroy();
+                       MM_HVV=null;
+                    break;
+                 }
+             });
+             /* 
+              
+              *  S T A D T R A D 
+              * 
+              * */
+             
+             _menuevent.menu.add({
+                title : 'StadtRAD',
                 itemId : 1,
                 checkable: true,
                 icon:  Ti.App.Android.R.drawable.ic_action_filter,
@@ -30,7 +73,6 @@ module.exports = function(_event) {
                      case false:
                         item.checked = true;
                         _event.source.progress.setRefreshing(true);
- 
                         require('adapter/stadtrad')({
                              done : function(stadtraeder) {
                                 _event.source.progress.setRefreshing(false); 
@@ -55,7 +97,6 @@ module.exports = function(_event) {
                                 } else ohneraeder++;
                              });
                              var message = raedertotal + ' Räder an '+ stadtraeder.length + ' Stationen verfügbar.\n' + ohneraeder + ' Stationen sind leider ohne Räder.';
-                             console.log(message);
                              Ti.UI.createNotification({
                                  message: message,
                                  duration: Ti.UI.NOTIFICATION_DURATION_LONG
@@ -73,7 +114,7 @@ module.exports = function(_event) {
              });
               // car2go Free Vehicles:
               _menuevent.menu.add({
-                title : 'car2go (freie Autos)',
+                title : 'car2go',
                 itemId : 7,
                 checkable: true,
                 icon:  Ti.App.Android.R.drawable.ic_action_filter,
@@ -87,47 +128,29 @@ module.exports = function(_event) {
                          _event.source.progress.setRefreshing(true);
                          require('adapter/car2go').loadFreeVehicles({
                              done: function(placemarks) {
-                                 
-                                 
-                                 
                                 _event.source.progress.setRefreshing(false); 
                                 Ti.UI.createNotification({
                                     message: placemarks.length + ' car2go-Autos verfügbar'
                                 }).show();
-                                var Car2Go = new MarkerManager({
+                                  MM_Car2Go = new MarkerManager({
                                     name: 'car2GO',
                                     points : placemarks.map(function(placemark) {
                                             return { 
                                                 lat : placemark.coordinates[1],
+                                                title: placemark.address.split(',')[0],
+                                                subtitle: placemark.name,
                                                 lng : placemark.coordinates[0]
                                             };
                                          }),
                                     image: '/images/car2go.png',
                                     map  : _event.source.mapView
                                 });
-                                
-                                
-                                return;
-                                _event.source.car2gopins = placemarks.map(function(placemark) {
-                                    return Map.createAnnotation({
-                                            latitude : placemark.coordinates[1],
-                                            longitude : placemark.coordinates[0],
-                                            image : '/images/car2go.png',
-                                            rightView : Ti.UI.createImageView({width:'200dp',height:'120dp',image:'/images/car2gologo.png'}),
-                                            type: 'car2go',
-                                            title : placemark.address.split(',')?placemark.address.split(',')[0]:'',
-                                            subtitle: placemark.name
-                                     });
-                                });
-                                _event.source.mapView.addAnnotations(_event.source.car2gopins);
-                               
                             }});
-                        
-      
-                     break;
+                         break;
                      case true:
                          item.checked=false;
-                        _event.source.car2gopins && _event.source.mapView.removeAnnotations(_event.source.car2gopins);
+                         MM_Car2Go && MM_Car2Go.destroy();
+                         MM_Car2Go = null;
                      break;
                  }
              });

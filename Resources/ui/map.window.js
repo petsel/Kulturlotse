@@ -2,7 +2,6 @@ var Moment = require('vendor/moment');
 Moment.locale('de');
 var GeoLocation = new (require('vendor/georoute'))();
 var Map = require('ti.map');
-var HVV = new (require('adapter/hvv'))();
 
 module.exports = function() {
     var region = {
@@ -26,7 +25,7 @@ module.exports = function() {
     var Model = new (require('adapter/events'))();
     var self = Ti.UI.createWindow({
         fullscreen : true,
-        hvvannotations : [],
+       
         day : Moment(event.date).format('DD.MM.YYYY')
     });
     self.mapView = Map.createView({
@@ -52,17 +51,6 @@ module.exports = function() {
     self.add(self.progress);
 
     self.mapView.addEventListener('complete', function() {
-        // hvv pins:
-        self.hvvannotations = HVV.getStations(self.mapView.region).map(function(hvv) {
-            return Map.createAnnotation({
-                latitude : hvv.lat,
-                longitude : hvv.lng,
-                title : hvv.name,
-                id : hvv.id,
-                image : '/images/hvv.png'
-            });
-        });
-        self.mapView.addAnnotations(self.hvvannotations);
         // event pins
         var pindata = Model.getLocationsByDay(event.day).map(function(loc) {
             return Map.createAnnotation({
@@ -142,8 +130,6 @@ module.exports = function() {
             }
             return false;
         }
-
-
         Ti.App.Properties.setString('LASTREGION', JSON.stringify({
             latitude : _e.latitude,
             longitude : _e.longitude,
@@ -155,29 +141,6 @@ module.exports = function() {
             setTimeout(function() {
                 self.locked = false;
             }, 50);
-            var map = _e.source;
-            if (_e.latitudeDelta > 0.2) {
-                console.log(self.hvvannotations.length + ' annotations removed');
-                map.removeAnnotations(self.hvvannotations);
-                self.hvvannotations = [];
-                return;
-            }
-            var to_added_annotations = [];
-            HVV.getStations(_e).forEach(function(hvv) {
-                if (!isIdinList(hvv.id)) {
-                    var pin = Map.createAnnotation({
-                        latitude : hvv.lat,
-                        longitude : hvv.lng,
-                        id : hvv.id,
-                        title : hvv.name,
-                        //  subtitle : hvv.lat + ',' + hvv.lng,
-                        image : '/images/hvv.png'
-                    });
-                    self.hvvannotations.push(pin);
-                    to_added_annotations.push(pin);
-                }
-            });
-            self.mapView.addAnnotations(to_added_annotations);
         } else {
             setTimeout(function() {
                 self.locked = false;
