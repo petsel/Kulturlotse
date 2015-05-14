@@ -10,9 +10,13 @@
    map  : mapView,
    maxannotations : 144
  });
+ Car2Go.addEventListener('complete',function(){})
  Car2Go.destroy();
  *
  *
+ * Events:
+ * 'start' and 'complete'
+ * 
  */
 
 var Map = require('ti.map');
@@ -38,6 +42,7 @@ var Module = function(options) {
 
 Module.prototype = {
     destroy : function() {
+        // TODO removing of event listener on map
         // copy the object into array for map api:
         var annotations = [];
         for (id in this.markers_in_map) {
@@ -48,7 +53,7 @@ Module.prototype = {
         console.log(annotations.length);
         this.map.removeAnnotations(annotations);
         this.markers_in_map = null;
-        // TODO removing of event listener on map
+        
     },
     _importData : function() {
         var t_start = new Date().getTime();
@@ -67,6 +72,7 @@ Module.prototype = {
         });
     },
     _updateMap : function(region) {
+        this.fireEvent('start');
         var RASTER = Math.round(Math.sqrt(this.maxannotations));
         var t_start = new Date().getTime();
         console.log('============REGIONCHANGED================');
